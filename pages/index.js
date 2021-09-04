@@ -15,7 +15,7 @@ export default function Home({ uni, cont, cur }) {
 	);
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
 	const api = process.env.API;
 
 	const data1 = await fetch(`http://ip-api.com/json`);
