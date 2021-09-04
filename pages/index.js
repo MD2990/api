@@ -1,7 +1,27 @@
 import Head from 'next/head';
 import Main from '../component/Main';
+import useAPI from '../component/useApI';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
+import { Center } from '@chakra-ui/layout';
 
-export default function Home({ uni, cont, cur }) {
+export default function Home() {
+	const { data, isLoading, error } = useAPI('/api/h');
+
+	if (isLoading)
+		return (
+			<Center mt='25%'>
+				<Loader
+					type='Puff'
+					color='#00BFFF'
+					height={100}
+					width={100}
+					timeout={3000} //3 secs
+				/>
+			</Center>
+		);
+	if (error) return <Center mt='25%'>failed to load...</Center>;
+
 	return (
 		<>
 			<Head>
@@ -10,36 +30,7 @@ export default function Home({ uni, cont, cur }) {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<Main uni={uni} cont={cont} cur={cur} />
+			<Main uni={data.uni} cont={data.cont} cur={data.cur} />
 		</>
 	);
-}
-
-export async function getServerSideProps(context) {
-	const api = process.env.API;
-
-	const data1 = await fetch(`http://ip-api.com/json`);
-	const cont = await data1.json();
-
-	const data2 = await fetch(
-		`http://api.ipstack.com/${cont.query}?access_key=${api}`,
-	);
-
-	const cur = await data2.json();
-
-	const data3 = await fetch(
-		`http://universities.hipolabs.com/search?country=${cont.country}`,
-	);
-
-	const uni = await data3.json();
-
-	if (!cont || !cur || !uni) {
-		return {
-			notFound: true,
-		};
-	}
-
-	return {
-		props: { uni, cont, cur }, // will be passed to the page component as props
-	};
 }
