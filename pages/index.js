@@ -50,7 +50,12 @@ export default function Home() {
 		<>
 			<Head>
 				<title>Api ZooM</title>
+				<meta
+					httpEquiv='Content-Security-Policy'
+					content='upgrade-insecure-requests'
+				/>
 				<meta name='description' content='Api integration using Next js' />
+
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 

@@ -5,8 +5,6 @@ export default function useAPI(api, options) {
 		revalidateIfStale: false,
 		revalidateOnFocus: false,
 		refreshWhenHidden: false,
-		dedupingInterval: 5000,
-		focusThrottleInterval: 5000,
 	});
 
 	return {
