@@ -129,8 +129,8 @@ function BasicStatistics({
 		</Box>
 	);
 }
-
 export default function Main({ uni, cont, cur }) {
+	console.log(cont);
 	const router = useRouter();
 
 	const Colleges = () => {
@@ -157,15 +157,15 @@ export default function Main({ uni, cont, cur }) {
 	return (
 		<Center>
 			<BasicStatistics
-				country={uni[0].country.toUpperCase()}
-				collegesNumber={uni.length}
-				isp={cont.isp}
-				pos={`N:${cont.lat}    E:${cont.lon}`}
-				timezone={cont.timezone}
-				city={cont.city}
-				ip={cont.query}
-				language={cur.location.languages[0].name}
-				code={cur.location.calling_code}
+				country={uni ? uni[0].country.toUpperCase() : 'Not found'}
+				collegesNumber={uni ? uni.length : 0}
+				isp={cur.isp}
+				pos={`N:${cur.lat}    E:${cur.lon}`}
+				timezone={cur.timezone}
+				city={cur.city}
+				ip={cur.query}
+				language={cont.location ? cont.location.languages[0].name : 'Not found'}
+				code={cont.location ? cont.location.calling_code : 'Not found'}
 			/>
 		</Center>
 	);
