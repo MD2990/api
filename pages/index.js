@@ -25,7 +25,9 @@ export default function Home() {
 		isLoading: d3L,
 		error: d3E,
 	} = useAPI(
-		`http://universities.hipolabs.com/search?country=${d1D && d1D.country}`,
+		`http://universities.hipolabs.com/search?country=${
+			d1D ? d1D.country : 'oman'
+		}`,
 	);
 
 	if (d1L || d2L || d3L)
