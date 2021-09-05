@@ -8,21 +8,27 @@ import { Center } from '@chakra-ui/layout';
 export default function Home() {
 	const api = process.env.NEXT_PUBLIC_API;
 
-	const { data: d1D, isLoading: d1L, error: d1E } = useAPI('//ip-api.com/json');
+	const {
+		data: d1D,
+		isLoading: d1L,
+		error: d1E,
+	} = useAPI('http://ip-api.com/json');
 
 	const {
 		data: d2D,
 		isLoading: d2L,
 		error: d2E,
-	} = useAPI(`http//api.ipstack.com/85.154.239.230?access_key=${api}`);
+	} = useAPI(
+		`http://api.ipstack.com/${d1D ? d1D.query : '8.8.8.8'}?access_key=${api}`,
+	);
 
 	const {
 		data: d3D,
 		isLoading: d3L,
 		error: d3E,
 	} = useAPI(
-		`http//universities.hipolabs.com/search?country=${
-			d1D ? d1D.country : 'oman'
+		`http://universities.hipolabs.com/search?country=${
+			d1D ? d1D.country : 'USA'
 		}`,
 	);
 
@@ -38,7 +44,7 @@ export default function Home() {
 				/>
 			</Center>
 		);
-	if (d1E || d2E || d3E) return <Center mt='25%'>failed to load...</Center>;
+	if (d1E || d2E || d3E) return <Center mt='25%'>Failed to load...</Center>;
 
 	return (
 		<>
