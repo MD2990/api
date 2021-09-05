@@ -5,7 +5,14 @@ import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
 import { chakra } from '@chakra-ui/system';
 import { FiServer } from 'react-icons/fi';
 import { GoLocation } from 'react-icons/go';
-import { BsAlarm, BsCardImage, BsAward } from 'react-icons/bs';
+import {
+	BsAlarm,
+	BsAward,
+	BsGeo,
+	BsTypeItalic,
+	BsLayers,
+	BsFileEarmarkCode,
+} from 'react-icons/bs';
 
 function StatsCard(props) {
 	const { title, stat, icon } = props;
@@ -38,7 +45,7 @@ function StatsCard(props) {
 				</Box>
 				<Box
 					my={'auto'}
-					color={useColorModeValue('gray.300', 'gray.200')}
+					color={useColorModeValue('blue.500', 'gray.200')}
 					alignContent={'center'}>
 					{icon}
 				</Box>
@@ -83,11 +90,15 @@ function BasicStatistics({
 				columns={{ base: 1, lg: 2, md: 2 }}
 				spacing={{ base: 5, lg: 8 }}>
 				<StatsCard
-					title={'Colleges'}
+					title={'Country Code'}
 					stat={country_code}
 					icon={<BsAward size={'3em'} />}
 				/>
-				<StatsCard title={'ISP'} stat={region_name} icon={<FiServer size={'3em'} />} />
+				<StatsCard
+					title={'Region Name'}
+					stat={region_name}
+					icon={<FiServer size={'3em'} />}
+				/>
 				<StatsCard
 					title={'Position'}
 					stat={pos}
@@ -100,36 +111,29 @@ function BasicStatistics({
 					icon={<BsAlarm size={'3em'} />}
 				/>
 
-				<StatsCard
-					title={'City'}
-					stat={city}
-					icon={<BsCardImage size={'3em'} />}
-				/>
+				<StatsCard title={'City'} stat={city} icon={<BsGeo size={'3em'} />} />
 				<StatsCard
 					title={'Your IP'}
 					stat={ip}
-					icon={<BsCardImage size={'3em'} />}
+					icon={<BsTypeItalic size={'3em'} />}
 				/>
 				<StatsCard
-					title={'Area Code'}
+					title={'Region Code'}
 					stat={region_code}
-					icon={<BsCardImage size={'3em'} />}
+					icon={<BsLayers size={'3em'} />}
 				/>
 				<StatsCard
-					title={'Language'}
+					title={'Zip Code'}
 					stat={zip_code}
-					icon={<BsCardImage size={'3em'} />}
+					icon={<BsFileEarmarkCode size={'3em'} />}
 				/>
 			</SimpleGrid>
 		</Box>
 	);
 }
-export default function Main({ data  }) {
-
-
-
+export default function Main({ data }) {
 	return (
-		<Center>
+		<Center mt={{ base: '10%', lg: '8%', md: '18%', sm: '5%' }}>
 			<BasicStatistics
 				country={data ? data.country_name.toUpperCase() : 'Not found'}
 				country_code={data ? data.country_code : 0}
