@@ -6,33 +6,15 @@ import Loader from 'react-loader-spinner';
 import { Center } from '@chakra-ui/layout';
 
 export default function Home() {
-	const api = process.env.NEXT_PUBLIC_API;
 
 	const {
-		data: d1D,
-		isLoading: d1L,
-		error: d1E,
-	} = useAPI('http://ip-api.com/json');
+		data,
+		isLoading,
+		error,
+	} = useAPI('https://freegeoip.app/json/');
 
-	const {
-		data: d2D,
-		isLoading: d2L,
-		error: d2E,
-	} = useAPI(
-		`http://api.ipstack.com/${d1D ? d1D.query : '8.8.8.8'}?access_key=${api}`,
-	);
 
-	const {
-		data: d3D,
-		isLoading: d3L,
-		error: d3E,
-	} = useAPI(
-		`http://universities.hipolabs.com/search?country=${
-			d1D ? d1D.country : 'USA'
-		}`,
-	);
-
-	if (d1L || d2L || d3L)
+	if (isLoading)
 		return (
 			<Center mt='25%'>
 				<Loader
@@ -44,7 +26,7 @@ export default function Home() {
 				/>
 			</Center>
 		);
-	if (d1E || d2E || d3E) return <Center mt='25%'>Failed to load...</Center>;
+	if (error) return <Center mt='25%'>Failed to load...</Center>;
 
 	return (
 		<>
@@ -59,7 +41,7 @@ export default function Home() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<Main uni={d3D} cont={d2D} cur={d1D} />
+			<Main data={data}  />
 		</>
 	);
 	/* 

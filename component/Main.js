@@ -1,13 +1,8 @@
 import { Box, Center, Flex, SimpleGrid, Text } from '@chakra-ui/layout';
 import React from 'react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { useRouter } from 'next/dist/client/router';
 import { useColorModeValue } from '@chakra-ui/react';
-
-import Link from 'next/link';
 import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
 import { chakra } from '@chakra-ui/system';
-import { BsPerson } from 'react-icons/bs';
 import { FiServer } from 'react-icons/fi';
 import { GoLocation } from 'react-icons/go';
 import { BsAlarm, BsCardImage, BsAward } from 'react-icons/bs';
@@ -54,14 +49,14 @@ function StatsCard(props) {
 
 function BasicStatistics({
 	country,
-	collegesNumber,
-	isp,
+	country_code,
+	region_name,
 	pos,
 	timezone,
 	city,
 	ip,
-	code,
-	language,
+	region_code,
+	zip_code,
 }) {
 	return (
 		<Box
@@ -89,10 +84,10 @@ function BasicStatistics({
 				spacing={{ base: 5, lg: 8 }}>
 				<StatsCard
 					title={'Colleges'}
-					stat={collegesNumber}
+					stat={country_code}
 					icon={<BsAward size={'3em'} />}
 				/>
-				<StatsCard title={'ISP'} stat={isp} icon={<FiServer size={'3em'} />} />
+				<StatsCard title={'ISP'} stat={region_name} icon={<FiServer size={'3em'} />} />
 				<StatsCard
 					title={'Position'}
 					stat={pos}
@@ -117,55 +112,34 @@ function BasicStatistics({
 				/>
 				<StatsCard
 					title={'Area Code'}
-					stat={code}
+					stat={region_code}
 					icon={<BsCardImage size={'3em'} />}
 				/>
 				<StatsCard
 					title={'Language'}
-					stat={language}
+					stat={zip_code}
 					icon={<BsCardImage size={'3em'} />}
 				/>
 			</SimpleGrid>
 		</Box>
 	);
 }
-export default function Main({ uni, cont, cur }) {
-	console.log(cont);
-	const router = useRouter();
+export default function Main({ data  }) {
 
-	const Colleges = () => {
-		return uni.map((c, index) => {
-			return (
-				<div key={index}>
-					<Text> {}</Text>
 
-					{c.web_pages.map((p) => (
-						<Link key={index} href={p}>
-							<a>
-								{c.name}
-								<ExternalLinkIcon mx='2px' />
-							</a>
-						</Link>
-					))}
-
-					{/* <ExternalLinkIcon mx='2px' /> */}
-				</div>
-			);
-		});
-	};
 
 	return (
 		<Center>
 			<BasicStatistics
-				country={uni ? uni[0].country.toUpperCase() : 'Not found'}
-				collegesNumber={uni ? uni.length : 0}
-				isp={cur.isp}
-				pos={`N:${cur.lat}    E:${cur.lon}`}
-				timezone={cur.timezone}
-				city={cur.city}
-				ip={cur.query}
-				language={cont.location ? cont.location.languages[0].name : 'Not found'}
-				code={cont.location ? cont.location.calling_code : 'Not found'}
+				country={data ? data.country_name.toUpperCase() : 'Not found'}
+				country_code={data ? data.country_code : 0}
+				region_name={data.region_name}
+				pos={`N:${data.latitude}    E:${data.longitude}`}
+				timezone={data.time_zone}
+				city={data.city}
+				ip={data.ip}
+				zip_code={data ? data.zip_code : 'Not found'}
+				region_code={data ? data.region_code : 'Not found'}
 			/>
 		</Center>
 	);
