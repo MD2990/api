@@ -14,14 +14,16 @@ export default function Home() {
 		data: d2D,
 		isLoading: d2L,
 		error: d2E,
-	} = useAPI(`//api.ipstack.com/85.154.239.230?access_key=${api}`);
+	} = useAPI(`http//api.ipstack.com/85.154.239.230?access_key=${api}`);
 
 	const {
 		data: d3D,
 		isLoading: d3L,
 		error: d3E,
 	} = useAPI(
-		`//universities.hipolabs.com/search?country=${d1D ? d1D.country : 'oman'}`,
+		`http//universities.hipolabs.com/search?country=${
+			d1D ? d1D.country : 'oman'
+		}`,
 	);
 
 	if (d1L || d2L || d3L)
