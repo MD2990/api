@@ -1,38 +1,32 @@
-import Head from 'next/head';
-import Main from '../component/Main';
-import useAPI from '../component/useApI';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import Loader from 'react-loader-spinner';
-import { Center } from '@chakra-ui/layout';
+import Head from "next/head";
+import Main from "../component/Main";
+import useAPI from "../component/useApI";
+
+import { Center } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/spinner";
 
 export default function Home() {
-	const { data, isLoading, error } = useAPI('https://freegeoip.app/json/');
+  const { data, isLoading, error } = useAPI("https://freegeoip.app/json/");
 
-	if (isLoading)
-		return (
-			<Center mt='25%'>
-				<Loader
-					type='Puff'
-					color='#00BFFF'
-					height={100}
-					width={100}
-					timeout={3000} //3 secs
-				/>
-			</Center>
-		);
-	if (error) return <Center mt='25%'>Failed to load...</Center>;
+  if (isLoading)
+    return (
+      <Center mt="25%">
+        <Spinner size="xl" color="blue.300" />
+      </Center>
+    );
+  if (error) return <Center mt="25%">Failed to load...</Center>;
 
-	return (
-		<>
-			<Head>
-				<title>Api ZooM</title>
+  return (
+    <>
+      <Head>
+        <title>Api ZooM</title>
 
-				<meta name='description' content='Api integration using Next js' />
+        <meta name="description" content="Api integration using Next js" />
 
-				<link rel='icon' href='/favicon.ico' />
-			</Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-			<Main data={data} />
-		</>
-	);
+      <Main data={data} />
+    </>
+  );
 }
