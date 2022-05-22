@@ -1,26 +1,13 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
+import handlers from "../../mid/midWare";
 export default async function handler(req, res) {
-	/* 	const data1 = await fetch(`http://ip-api.com/json`);
-	const cont = await data1.json();
+  await handlers(req, res);
+  const { query, method } = req;
 
-	res.json({cont}) */
-
-	const api = process.env.API;
-
-	const data1 = await fetch(`http://ip-api.com/json`);
-	const cont = await data1.json();
-
-	const data2 = await fetch(
-		`http://api.ipstack.com/${cont.query}?access_key=${api}`,
-	);
-
-	const cur = await data2.json();
-
-	const data3 = await fetch(
-		`http://universities.hipolabs.com/search?country=${cont.country}`,
-	);
-
-	const uni = await data3.json();
-	res.json({ uni, cont, cur });
+  //const api = process.env.API;
+  // if method is GET
+  if (method === "GET") {
+    const data = await fetch(`http://ip-api.com/json`);
+    const country = await data.json();
+    res.status(200).json({ country });
+  }
 }

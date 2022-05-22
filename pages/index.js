@@ -6,7 +6,7 @@ import { Center } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
 
 export default function Home() {
-  const { data, isLoading, error } = useAPI("https://freegeoip.app/json/");
+  const { data, isLoading, error } = useAPI("/api/h");
 
   if (isLoading)
     return (
@@ -26,7 +26,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Main data={data} />
+      <Main data={data.country} />
     </>
   );
 }
