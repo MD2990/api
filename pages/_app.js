@@ -1,19 +1,12 @@
-import '../styles/globals.css';
-import { ChakraProvider } from '@chakra-ui/react';
-import { SWRConfig } from 'swr';
-import axios from 'axios';
+import "../styles/globals.css";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }) {
-	return (
-				<SWRConfig value={{ fetcher: (url) => axios(url).then((r) => r.data) }}> 
-				
-				
-		<ChakraProvider>
-			<Component {...pageProps} />
-		</ChakraProvider>
-				</SWRConfig>
-
-	);
+  return (
+    <ChakraProvider>
+      <Component {...pageProps} />
+    </ChakraProvider>
+  );
 }
 
 export default MyApp;

@@ -1,118 +1,176 @@
-import { Box, Center, Flex, SimpleGrid, Text } from "@chakra-ui/layout";
-import React from "react";
-import { useColorModeValue } from "@chakra-ui/react";
-import { Stat, StatLabel, StatNumber } from "@chakra-ui/stat";
-import { chakra } from "@chakra-ui/system";
-import { FiServer } from "react-icons/fi";
-import { GoLocation } from "react-icons/go";
 import {
-  BsAlarm,
-  BsAward,
-  BsGeo,
-  BsTypeItalic,
-  BsLayers,
-  BsFileEarmarkCode,
-} from "react-icons/bs";
+  Box,
+  Center,
+  Text,
+  Link,
+  Stack,
+  Heading,
+  HStack,
+} from "@chakra-ui/layout";
+import { Wrap, WrapItem } from "@chakra-ui/react";
+import React, { useCallback, useEffect } from "react";
+import { useColorModeValue } from "@chakra-ui/react";
+import Image from "next/image";
+import SearchInput from "./SearchInput";
+import { useSnapshot } from "valtio";
+import state from "../stor";
+import Paginate from "./Paginate";
 
-function StatsCard(props) {
-  const { title, stat, icon } = props;
 
-  return (
-    <Stat
-      className="title"
-      px={{ base: 2, md: 4 }}
-      py={"5"}
-      shadow={"xl"}
-      border={"1px solid"}
-      borderColor={useColorModeValue("gray.400", "gray.500")}
-      rounded={"lg"}
-    >
-      <Flex justifyContent={"space-between"}>
-        <Box pl={{ base: 2, md: 4 }}>
-          <StatLabel fontWeight={"medium"} textAlign="center">
-            {title}
-          </StatLabel>
-          <StatNumber
-            color="blue.600"
-            mx="2"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            fontSize={"xl"}
-            fontWeight={"medium"}
-            textAlign="center"
-          >
-            {stat}
-          </StatNumber>
-        </Box>
-        <Box
-          my={"auto"}
-          color={useColorModeValue("blue.500", "gray.200")}
-          alignContent={"center"}
-        >
-          {icon}
-        </Box>
-      </Flex>
-    </Stat>
-  );
-}
 
-function BasicStatistics({
-  country,
-  country_code,
-  region_name,
-  pos,
-  timezone,
-  city,
-  ip,
-  region_code,
-  zip_code,
+function News({
+  title,
+  url,
+  byline,
+  published_date,
+  caption,
+  img,
+  i,
 }) {
   return (
-    <Box
-      maxW="7xl"
-      minW="12rem"
-      mx={"auto"}
-      mb="5%"
-      pt={5}
-      px={{ base: 2, sm: 12, md: 17 }}
-    >
-      <chakra.h1
-        color="gray.500"
-        className="title"
-        textAlign={"center"}
-        fontFamily="initial"
-        fontSize={{ base: "xl", xl: "6xl", lg: "4xl", md: "2xl", sm: "xl" }}
-        py={10}
-        fontWeight={"bold"}
+    <WrapItem>
+      <Center py={12}>
+        <Box
+          role={"group"}
+          p={6}
+          maxW={"330px"}
+          w={"full"}
+          bg={useColorModeValue("white", "gray.800")}
+          boxShadow={"2xl"}
+          rounded={"lg"}
+          pos={"relative"}
+          zIndex={1}
+        >
+          <Box
+            className="title"
+            rounded={"lg"}
+            mt={-12}
+            pos={"relative"}
+            height={"230px"}
+            _after={{
+              transition: "all .3s ease",
+              content: '""',
+              w: "full",
+              h: "full",
+              pos: "absolute",
+              top: 5,
+              left: 0,
+              backgroundImage: `url(${img})`,
+              filter: "blur(15px)",
+              zIndex: -1,
+            }}
+            _groupHover={{
+              _after: {
+                filter: "blur(20px)",
+              },
+            }}
+          >
+            <Image
+              alt="image"
+              rounded={"lg"}
+              height={230}
+              width={282}
+              objectFit={"cover"}
+              src={img}
+            />
+          </Box>
+          <Stack pt={10} align={"center"}>
+            <Text
+              color={"gray.500"}
+              fontSize={"sm"}
+              textTransform={"uppercase"}
+            >
+              {title}
+            </Text>
+            <Link
+              href={url}
+              isExternal
+              m="1.5"
+              p="0.5"
+              _focus={{
+                boxShadow: "none",
+                outline: "none",
+              }}
+              _hover={{
+                textDecoration: "none",
+              }}
+            >
+              <Heading fontSize={"xl"} fontFamily={"body"} fontWeight={500}>
+                {caption.length > 50
+                  ? caption.substring(0, 80) + "..."
+                  : caption}
+              </Heading>
+            </Link>
+            <HStack w="full" justify="space-between">
+              <Text fontWeight={"hairline"} fontSize={"xx-small"}>
+                {i}
+              </Text>
+              <Text fontWeight={100} fontSize={"xx-small"}>
+                {published_date}
+              </Text>
+              <Text as="cite" fontSize={"x-small"} color={"gray.600"}>
+                {byline}
+              </Text>
+            </HStack>
+          </Stack>
+        </Box>
+      </Center>
+      {/*   <Box
+        overflow={"clip"}
+        fontSize={["sm", "md", "xl", "3xl"]}
+        textAlign="center"
       >
-        <Text color="blue.500" fontSize="larger" as="span">
-          “{country}”
-        </Text>{" "}
-        is a great country here is some information about it
-      </chakra.h1>
-      <SimpleGrid
-        columns={{ base: 1, lg: 2, md: 2 }}
-        spacing={{ base: 5, lg: 8 }}
-      >
-        <StatsCard
-          title={"Country Code"}
-          stat={country_code}
-          icon={<BsAward size={"3em"} />}
+        <Text color="blue.500" fontSize={["sm", "md", "lg"]}>
+          {title}
+        </Text>
+        <Image
+          src={img}
+          height={"200px"}
+          width={"300px"}
+          layout="fixed"
+          alt="name"
         />
-        <StatsCard
+        <Text textAlign="left">{caption}</Text>
+
+        <Link
+          href={url}
+          isExternal
+          m="1.5"
+          p="0.5"
+          _focus={{
+            boxShadow: "none",
+            outline: "none",
+          }}
+        >
+          <LinkIcon />
+        </Link>
+
+        <Text fontSize={"xs"}>{byline}</Text>
+
+        <Text color="blue.500" fontSize={"xx-small"}>
+          {i}
+        </Text>
+      </Box> */}
+
+      {/*    <StatsCard
+          title={"Country Code"}
+          stat={url}
+          icon={<BsAward size={"3em"} />}
+        /> */}
+      {/*   <StatsCard
           title={"Region Name"}
           stat={region_name}
           icon={<FiServer size={"3em"} />}
         />
         <StatsCard
           title={"Position"}
-          stat={pos}
+          stat={byline}
           icon={<GoLocation size={"3em"} />}
         />
 
         <StatsCard
           title={"Time Zone"}
-          stat={timezone}
+          stat={published_date}
           icon={<BsAlarm size={"3em"} />}
         />
 
@@ -131,25 +189,63 @@ function BasicStatistics({
           title={"Zip Code"}
           stat={zip_code}
           icon={<BsFileEarmarkCode size={"3em"} />}
-        />
-      </SimpleGrid>
-    </Box>
+        /> */}
+    </WrapItem>
   );
 }
+
 export default function Main({ data }) {
+  const snap = useSnapshot(state);
+
+  const rs = useCallback(
+    () => snap.searchResults.slice(snap.offset, snap.offset + snap.PER_PAGE),
+    [snap.PER_PAGE, snap.offset, snap.searchResults]
+  );
+
+  useEffect(() => {
+    rs();
+  }, [rs]);
+
+  useEffect(() => {
+    state.searchResults = data;
+  }, [data]);
+
   return (
-    <Center mt={{ base: "10%", lg: "8%", md: "18%", sm: "5%" }}>
-      <BasicStatistics
-        country={data.country?.toUpperCase() || "Not found"}
-        country_code={data.countryCode || "Not found"}
-        region_name={data.regionName || "Not found"}
-        pos={`N:${data.lat || "Not found"}    E:${data.lon || "Not found"}`}
-        timezone={data.timezone || "Not found"}
-        city={data.city || "Not found"}
-        ip={data.query || "Not found"}
-        zip_code={data.zip || "Not found"}
-        region_code={data.region || "Not found"}
-      />
-    </Center>
+    <>
+      <Center mt="5%">
+        <Heading
+          color={"gray.500"}
+          fontWeight={500}
+          textOverflow={"ellipsis"}
+          overflow="clip"
+          whiteSpace={"break-spaces"}
+          fontSize={["xl", "2xl", "4xl", "7xl"]}
+          textAlign={"center"}
+          fontFamily={"fantasy"}
+          letterSpacing={["0.01em", "0.03em", "0.05em"]}
+        >
+          {"Search, Read, Learn & Explore"}
+        </Heading>
+      </Center>
+
+      <SearchInput data={data} />
+      <Center>
+        <Wrap spacing="4" justify={"center"}>
+          {rs().map((item, index) => (
+            <News
+              key={index}
+              title={item.title}
+              url={item.url}
+              byline={item.byline}
+              i={index + 1 + " of " + data.length}
+              caption={item.abstract}
+              img={item.multimedia[1].url}
+              published_date={new Date(item.published_date).toDateString()}
+            />
+          ))}
+        </Wrap>
+      </Center>
+      <Paginate />
+    </>
   );
 }
