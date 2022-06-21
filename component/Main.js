@@ -16,17 +16,7 @@ import { useSnapshot } from "valtio";
 import state from "../stor";
 import Paginate from "./Paginate";
 
-
-
-function News({
-  title,
-  url,
-  byline,
-  published_date,
-  caption,
-  img,
-  i,
-}) {
+function News({ title, url, byline, published_date, caption, img, i }) {
   return (
     <WrapItem>
       <Center py={12}>
@@ -115,81 +105,6 @@ function News({
           </Stack>
         </Box>
       </Center>
-      {/*   <Box
-        overflow={"clip"}
-        fontSize={["sm", "md", "xl", "3xl"]}
-        textAlign="center"
-      >
-        <Text color="blue.500" fontSize={["sm", "md", "lg"]}>
-          {title}
-        </Text>
-        <Image
-          src={img}
-          height={"200px"}
-          width={"300px"}
-          layout="fixed"
-          alt="name"
-        />
-        <Text textAlign="left">{caption}</Text>
-
-        <Link
-          href={url}
-          isExternal
-          m="1.5"
-          p="0.5"
-          _focus={{
-            boxShadow: "none",
-            outline: "none",
-          }}
-        >
-          <LinkIcon />
-        </Link>
-
-        <Text fontSize={"xs"}>{byline}</Text>
-
-        <Text color="blue.500" fontSize={"xx-small"}>
-          {i}
-        </Text>
-      </Box> */}
-
-      {/*    <StatsCard
-          title={"Country Code"}
-          stat={url}
-          icon={<BsAward size={"3em"} />}
-        /> */}
-      {/*   <StatsCard
-          title={"Region Name"}
-          stat={region_name}
-          icon={<FiServer size={"3em"} />}
-        />
-        <StatsCard
-          title={"Position"}
-          stat={byline}
-          icon={<GoLocation size={"3em"} />}
-        />
-
-        <StatsCard
-          title={"Time Zone"}
-          stat={published_date}
-          icon={<BsAlarm size={"3em"} />}
-        />
-
-        <StatsCard title={"City"} stat={city} icon={<BsGeo size={"3em"} />} />
-        <StatsCard
-          title={"Your IP"}
-          stat={ip}
-          icon={<BsTypeItalic size={"3em"} />}
-        />
-        <StatsCard
-          title={"Region Code"}
-          stat={region_code}
-          icon={<BsLayers size={"3em"} />}
-        />
-        <StatsCard
-          title={"Zip Code"}
-          stat={zip_code}
-          icon={<BsFileEarmarkCode size={"3em"} />}
-        /> */}
     </WrapItem>
   );
 }
@@ -231,6 +146,20 @@ export default function Main({ data }) {
       <SearchInput data={data} />
       <Center>
         <Wrap spacing="4" justify={"center"}>
+          {rs().length < 1 && (
+            <Center p="2" m="2" maxW="60%" noOfLines={[2, 3, 4]}>
+              <Heading
+                textAlign={"center"}
+                fontSize={["xl", "2xl", "4xl"]}
+                color={"gray.200"}
+              >
+                No Results Found for{" "}
+                <Text as="span" color={"gray.400"}>
+                  {snap.searchTerm}
+                </Text>
+              </Heading>
+            </Center>
+          )}
           {rs().map((item, index) => (
             <News
               key={index}
