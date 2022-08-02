@@ -168,7 +168,7 @@ export default function Main({ data }) {
               byline={item.byline}
               i={index + 1 + " of " + data.length}
               caption={item.abstract}
-              img={item.multimedia[1].url}
+              img={item.multimedia ? item.multimedia[0]?.url : "/loading.png"}
               published_date={new Date(item.published_date).toDateString()}
             />
           ))}
